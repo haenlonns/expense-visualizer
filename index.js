@@ -1,16 +1,16 @@
-const fs = require('fs').promises;
-const path = require('path');
-const process = require('process');
-const {authenticate} = require('@google-cloud/local-auth');
-const {google} = require('googleapis');
+const fs = require("fs").promises;
+const path = require("path");
+const process = require("process");
+const { authenticate } = require("@google-cloud/local-auth");
+const { google } = require("googleapis");
 
 // If modifying these scopes, delete token.json.
-const SCOPES = ['https://www.googleapis.com/auth/spreadsheets.readonly'];
+const SCOPES = ["https://www.googleapis.com/auth/spreadsheets"];
 // The file token.json stores the user's access and refresh tokens, and is
 // created automatically when the authorization flow completes for the first
 // time.
-const TOKEN_PATH = path.join(process.cwd(), 'token.json');
-const CREDENTIALS_PATH = path.join(process.cwd(), 'credentials.json');
+const TOKEN_PATH = path.join(process.cwd(), "token.json");
+const CREDENTIALS_PATH = path.join(process.cwd(), "credentials.json");
 
 /**
  * Reads previously authorized credentials from the save file.
@@ -38,7 +38,7 @@ async function saveCredentials(client) {
   const keys = JSON.parse(content);
   const key = keys.installed || keys.web;
   const payload = JSON.stringify({
-    type: 'authorized_user',
+    type: "authorized_user",
     client_id: key.client_id,
     client_secret: key.client_secret,
     refresh_token: client.credentials.refresh_token,
@@ -65,7 +65,34 @@ async function authorize() {
   return client;
 }
 
+/**
+ * Initializes a copy of the expense spreadsheet:
+ * @see https://docs.google.com/spreadsheets/d/1maoXaJCKHVsMrNiQNJNtHK5OIYcuswgxmiqPSQWLe-k/edit
+ * @param {google.auth.OAuth2} auth The authenticated Google OAuth client.
+ * @return {string} Created spreadsheets ID
+ */
+async function createSpreadsheet(auth) { 
 
+  const service = google.sheets({ version: "v4", auth });
+  const resource = {
+    properties: {
+      title: "Expense Visualizer",
+    },
+  };
+
+  try {
+    const spreadsheet = await service.spreadsheets.create({
+      resource,
+      fields: 'spreadsheetId',
+    });
+    console.log(`Spreadsheet ID: ${spreadsheet.data.spreadsheetId}`);
+    return spreadsheet.data.spreadsheetId
+
+  } catch (err) {
+    // TODO (developer) - Handle exception
+    throw err;
+  }
+}
 
 /**
  * Prints the names and majors of students in a sample spreadsheet:
@@ -73,23 +100,21 @@ async function authorize() {
  * @param {google.auth.OAuth2} auth The authenticated Google OAuth client.
  */
 async function listMajors(auth) {
-  const sheets = google.sheets({version: 'v4', auth});
+  const sheets = google.sheets({ version: "v4", auth });
   const res = await sheets.spreadsheets.values.get({
-    spreadsheetId: '1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms',
-    range: 'Class Data!A2:E',
+    spreadsheetId: "1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms",
+    range: "Class Data!A2:E",
   });
   const rows = res.data.values;
   if (!rows || rows.length === 0) {
-    console.log('No data found.');
+    console.log("No data found.");
     return;
   }
-  console.log('Name, Major:');
+  console.log("Name, Major:");
   rows.forEach((row) => {
     // Print columns A and E, which correspond to indices 0 and 4.
     console.log(`${row[0]}, ${row[4]}`);
   });
 }
 
-
-
-authorize().then(listMajors).catch(console.error);
+authorize().then(createSpreadsheet).catch(console.error);
