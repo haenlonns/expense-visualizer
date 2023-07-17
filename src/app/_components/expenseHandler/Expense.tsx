@@ -9,11 +9,11 @@ function Expense(props: any) {
     category: string;
     creditCard: string;
   } = {
-    name: props.expenseData[0],
-    amount: props.expenseData[1],
-    date: props.expenseData[2],
-    category: props.expenseData[3],
-    creditCard: props.expenseData[4],
+    name: props.expenseData[4],
+    amount: props.expenseData[2],
+    date: props.expenseData[5],
+    category: props.expenseData[1],
+    creditCard: props.expenseData[6],
   };
 
   return (
