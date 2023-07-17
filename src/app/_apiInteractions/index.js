@@ -71,8 +71,7 @@ async function authorize() {
  * @param {google.auth.OAuth2} auth The authenticated Google OAuth client.
  * @return {string} Created spreadsheets ID
  */
-async function createSpreadsheet(auth) { 
-
+async function createSpreadsheet(auth) {
   const service = google.sheets({ version: "v4", auth });
   const resource = {
     properties: {
@@ -83,15 +82,28 @@ async function createSpreadsheet(auth) {
   try {
     const spreadsheet = await service.spreadsheets.create({
       resource,
-      fields: 'spreadsheetId',
+      fields: "spreadsheetId",
     });
     console.log(`Spreadsheet ID: ${spreadsheet.data.spreadsheetId}`);
-    return spreadsheet.data.spreadsheetId
-
+    return spreadsheet.data.spreadsheetId;
   } catch (err) {
     // TODO (developer) - Handle exception
     throw err;
   }
+}
+
+async function pullExpenses(auth) {
+  const sheets = google.sheets({ version: "v4", auth });
+  const res = await sheets.spreadsheets.values.get({
+    spreadsheetId: "1maoXaJCKHVsMrNiQNJNtHK5OIYcuswgxmiqPSQWLe-k",
+    range: "Expense Tracker!A2:H",
+  });
+  const rows = res.data.values;
+  rows.forEach((row) => {
+    // Print columns A and E, which correspond to indices 0 and 4.
+    console.log(`${row[2]}, ${row[4]}`);
+  });
+  return rows;
 }
 
 /**
@@ -117,4 +129,4 @@ async function listMajors(auth) {
   });
 }
 
-authorize().then(createSpreadsheet).catch(console.error);
+authorize().then(pullExpenses).catch(console.error);
