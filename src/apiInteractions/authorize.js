@@ -1,7 +1,8 @@
-const fs = require("fs").promises;
-const path = require("path");
-const process = require("process");
-const { authenticate } = require("@google-cloud/local-auth");
+import { promises as fs } from "fs";
+import path from "path";
+import process from "process";
+import { google } from "googleapis";
+import { authenticate } from "@google-cloud/local-auth";
 
 // If modifying these scopes, delete token.json.
 const SCOPES = ["https://www.googleapis.com/auth/spreadsheets"];
@@ -9,7 +10,10 @@ const SCOPES = ["https://www.googleapis.com/auth/spreadsheets"];
 // created automatically when the authorization flow completes for the first
 // time.
 const TOKEN_PATH = path.join(process.cwd(), "apiAuthorization/token.json");
-const CREDENTIALS_PATH = path.join(process.cwd(), "apiAuthorization/credentials.json");
+const CREDENTIALS_PATH = path.join(
+  process.cwd(),
+  "apiAuthorization/credentials.json"
+);
 
 /**
  * Reads previously authorized credentials from the save file.
@@ -64,4 +68,4 @@ async function authorize() {
   return client;
 }
 
-module.exports = authorize;
+export default authorize;

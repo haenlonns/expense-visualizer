@@ -1,6 +1,5 @@
-const { google } = require("googleapis");
-const authorize = require("./authorize");
-const { auth } = require("googleapis/build/src/apis/abusiveexperiencereport");
+import { google } from "googleapis";
+import authorize from "./authorize";
 
 async function createSpreadsheet(authClient) {
   const service = google.sheets({ version: "v4", auth: authClient });
@@ -29,8 +28,7 @@ async function createSpreadsheet(authClient) {
  * @param {google.auth.OAuth2} auth The authenticated Google OAuth client.
  * @return {string} Created spreadsheets ID
  */
-async function createExpenseTracker() {
-  const authClient = await authorize();
+async function createExpenseTracker(authClient) {
   const service = google.sheets({ version: "v4", auth: authClient });
   const destinationSpreadsheetId = await createSpreadsheet(authClient);
 
@@ -53,4 +51,4 @@ async function createExpenseTracker() {
   }
 }
 
-module.exports = createExpenseTracker;
+export default createExpenseTracker;

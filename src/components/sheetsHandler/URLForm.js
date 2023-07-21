@@ -1,15 +1,13 @@
-"use client"
-
 import { useState } from "react";
 
 function URLForm() {
   const [sheetURL, setSheetURL] = useState("");
 
-  const urlChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const urlChangeHandler = (event) => {
     setSheetURL(event.target.value);
   }
 
-  const urlSubmitHandler = (event: React.FormEvent<HTMLFormElement>) => {
+  const urlSubmitHandler = (event) => {
     event.preventDefault();
     // SUBMISSION EVENT
     setSheetURL("");

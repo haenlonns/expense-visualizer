@@ -1,6 +1,6 @@
 import Expense from "./Expense";
 
-function ExpenseList(props: any) {
+function ExpenseList(props) {
   if (props.expenses.length === 0) {
     return <h2 className="expenses-list__fallback">Found no expenses.</h2>;
   }
@@ -8,13 +8,7 @@ function ExpenseList(props: any) {
   return (
     <ul>
       {props.expenses.map(
-        (data: {
-          name: string;
-          amount: number;
-          date: Date;
-          category: string;
-          creditCard: string;
-        }) => (
+        (data) => (
           <Expense expenseData={data} />
         )
       )}

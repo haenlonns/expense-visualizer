@@ -1,14 +1,8 @@
 import Card from "../UI/Card";
 import ExpenseDate from "../UI/ExpenseDate";
 
-function Expense(props: any) {
-  const expense: {
-    name: string;
-    amount: number;
-    date: Date;
-    category: string;
-    creditCard: string;
-  } = {
+function Expense(props) {
+  const expense = {
     name: props.expenseData[4],
     amount: props.expenseData[2],
     date: props.expenseData[5],
