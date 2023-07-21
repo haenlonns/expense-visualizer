@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-function URLForm() {
+function URLForm(props) {
   const [sheetURL, setSheetURL] = useState("");
 
   const urlChangeHandler = (event) => {
@@ -10,6 +10,7 @@ function URLForm() {
   const urlSubmitHandler = (event) => {
     event.preventDefault();
     // SUBMISSION EVENT
+    props.setSubmitState(true);
     setSheetURL("");
   };
 

@@ -1,4 +1,4 @@
-import Expense from "./Expense";
+import Expense from "./Expense.js";
 
 function ExpenseList(props) {
   if (props.expenses.length === 0) {
@@ -7,11 +7,9 @@ function ExpenseList(props) {
 
   return (
     <ul>
-      {props.expenses.map(
-        (data) => (
-          <Expense expenseData={data} />
-        )
-      )}
+      {props.expenses.map((data) => (
+        <Expense expenseData={data} />
+      ))}
     </ul>
   );
 }

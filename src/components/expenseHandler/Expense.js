@@ -1,5 +1,5 @@
-import Card from "../UI/Card";
-import ExpenseDate from "../UI/ExpenseDate";
+import Card from "../UI/Card.js";
+import ExpenseDate from "../UI/ExpenseDate.js";
 
 function Expense(props) {
   const expense = {
@@ -14,11 +14,13 @@ function Expense(props) {
     <Card>
       <header>{expense.name}</header>
       <p>{expense.amount}</p>
-      <ExpenseDate date={expense.date} />
+      <p>{expense.date}</p>
       <p>{expense.category}</p>
       <p>{expense.creditCard}</p>
     </Card>
   );
 }
+
+// <ExpenseDate date={expense.date} />
 
 export default Expense;
