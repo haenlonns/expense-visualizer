@@ -2,6 +2,9 @@ import "./App.css";
 
 import URLForm from "./components/sheetsHandler/URLForm.js";
 import ExpenseList from "./components/expenseHandler/ExpenseList.js";
+import ExpenseTimeGraph from "./components/graphHandler/ExpenseTimeGraph.js";
+import Plot from "react-plotly.js";
+import React from "react";
 import { useState } from "react";
 
 const expenseData = [
@@ -180,19 +183,18 @@ const expenseData = [
 ];
 
 function App() {
-
   const [spreadsheetSubmitted, setSpreadsheetSubmitted] = useState(false);
-
-  let screen = <URLForm setSubmitState={setSpreadsheetSubmitted}/>;
+  let screen = <URLForm setSubmitState={setSpreadsheetSubmitted} />;
   if (spreadsheetSubmitted) {
-    screen = <ExpenseList expenses={expenseData} />
+    screen = (
+      <div>
+        <ExpenseList expenses={expenseData} />
+        <ExpenseTimeGraph expenses={expenseData} />
+      </div>
+    );
   }
+  return <div className="App">{screen}</div>;
 
-  return (
-    <div className="App">
-      {screen}
-    </div>
-  );
 }
 
 export default App;
